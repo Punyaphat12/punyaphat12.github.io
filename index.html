@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1"></script>
     <style>
+      body {
+  overscroll-behavior: none;
+  touch-action: none;
+}
+.card-stack {
+  touch-action: pan-y;  /* ปัดขึ้นลงได้ แต่ไม่ปัดซ้ายขวา */
+}
     body {
     display: flex;
     justify-content: center;  /* แนวนอน กึ่งกลาง */
@@ -215,7 +222,41 @@
   margin-top: 30px;
   user-select: none;
 }
+.card-stack {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  perspective: 1000px; /* เพิ่มมิติ 3D */
+}
 
+.card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  will-change: transform;
+}
+
+/* Stack ด้านหลังมีความเอียงเล็กน้อย */
+.card:nth-child(2) {
+  transform: scale(0.95) translateY(10px) rotateZ(-2deg);
+  z-index: 1;
+}
+
+.card:nth-child(3) {
+  transform: scale(0.9) translateY(20px) rotateZ(2deg);
+  z-index: 0;
+}
+
+/* เมื่อการ์ดด้านหน้าถูก swipe ออก */
+.card.swiped {
+  transition: transform 0.4s ease-in, opacity 0.4s ease-out;
+  opacity: 0;
+}
 .artwork {
   width: 100%;
   border-radius: 15px;
@@ -319,15 +360,61 @@ input[type="range"]:active::-webkit-slider-thumb {
   setTimeout(() => {
     document.querySelector(".card-container").style.display = "none";
     document.querySelector(".message").style.display = "block";
+    document.querySelector(".music-player").style.display = "block";
     document.querySelector(".video-container").style.display = "block";
     document.querySelector(".swipe-container").style.display = "block"; // ✅ แสดง Swipe Stack
     document.getElementById('birthdayMessage').style.display = "block";
-    document.querySelector(".music-player").style.display = "block";
     showFireworks();
     resetPositions(); // ✅ จัด Stack ใหม่หลังแสดง
   }, 1500);
 }
+function shiftStack() {
+  const cards = document.querySelectorAll('.card-stack .card');
 
+  cards.forEach((card, index) => {
+    card.style.transition = 'transform 0.5s ease';
+    if (index === 0) {
+      // กำลัง swipe ออก
+      card.classList.add('swiped');
+    } else if (index === 1) {
+      // ขยับ card[1] ไปแทนที่ card[0]
+      card.style.transform = 'scale(1) translateY(0px) rotateZ(0deg)';
+      card.style.zIndex = 2;
+    } else if (index === 2) {
+      // ขยับ card[2] ขึ้นมาแทนที่ card[1]
+      card.style.transform = 'scale(0.95) translateY(10px) rotateZ(-2deg)';
+      card.style.zIndex = 1;
+    }
+  });
+
+  // หลัง animation เสร็จ ค่อยจัด DOM ใหม่ (optional)
+  setTimeout(() => {
+    const stack = document.querySelector('.card-stack');
+    const swipedCard = stack.querySelector('.card.swiped');
+    if (swipedCard) {
+      swipedCard.classList.remove('swiped');
+      stack.appendChild(swipedCard);
+      resetStack();
+    }
+  }, 500);
+}
+
+function resetStack() {
+  const cards = document.querySelectorAll('.card-stack .card');
+  cards.forEach((card, index) => {
+    card.style.transition = 'none';
+    if (index === 0) {
+      card.style.transform = 'scale(1) translateY(0px) rotateZ(0deg)';
+      card.style.zIndex = 2;
+    } else if (index === 1) {
+      card.style.transform = 'scale(0.95) translateY(10px) rotateZ(-2deg)';
+      card.style.zIndex = 1;
+    } else if (index === 2) {
+      card.style.transform = 'scale(0.9) translateY(20px) rotateZ(2deg)';
+      card.style.zIndex = 0;
+    }
+  });
+}
         function showFireworks() {
             let duration = 3 * 1000;
             let end = Date.now() + duration;
@@ -374,10 +461,25 @@ input[type="range"]:active::-webkit-slider-thumb {
       </div>
     </div>
     <div class="message">🎉 สุขสันต์วันเกิดนะคุณชลญาณ์ 🎂<br>ขอให้วันนี้เป็นวันที่แสนพิเศษ 🎈<br>ขอให้มีความสุขมากๆ นะ! รักที่สุด 💕</div>
-
+     <div class="music-player" style="display: none;">
+      <div class="artwork">
+        <Image src="รูปวิว/316x316bb.webp" alt="Album Art">
+      </div>
+      <div class="song-info">
+        <div class="title">Blue</div>
+        <div class="artist">yung kai</div>
+      </div>
+      <input  type="range" id="progress" min="0" max="100" value="0">
+      <div class="controls">
+        <button id="play-pause">
+          ▶️
+        </button>
+      </div>
+      <audio id="audio" src="audio/yung kai blue official audio.mp3"></audio>
+    </div>
     <div class="video-container">
   <video controls>
-    <source src="video/วิว.mp4" type="video/mp4">
+    <source src="vidieo/วิว.mp4" type="video/mp4">
     วิดีโอนี้ไม่สามารถเล่นได้ในเบราว์เซอร์ของคุณ
   </video>
 </div>
@@ -476,24 +578,7 @@ input[type="range"]:active::-webkit-slider-thumb {
   window.addEventListener('touchend', handleDragEnd);
 
   resetPositions();
-</script>
-<div class="music-player" style="display: none;">
-      <div class="artwork">
-        <img src="รูปวิว/316x316bb.webp" alt="Album Art">
-      </div>
-      <div class="song-info">
-        <div class="title">Blue</div>
-        <div class="artist">yung kai</div>
-      </div>
-      <input type="range" id="progress" min="0" max="100" value="0">
-      <div class="controls">
-        <button id="play-pause">
-          ▶️
-        </button>
-      </div>
-      <audio id="audio" src="audio/yung kai blue official audio.mp3"></audio>
-    </div>
-     <script>
+
     const audio = document.getElementById('audio');
     const playPauseBtn = document.getElementById('play-pause');
     const progress = document.getElementById('progress');
@@ -520,5 +605,7 @@ input[type="range"]:active::-webkit-slider-thumb {
         audio.currentTime = (progress.value / 100) * audio.duration;
       }
     });
-  </script>
+    </script>
 </html>
+
+
