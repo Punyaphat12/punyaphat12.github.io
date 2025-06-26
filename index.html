@@ -337,6 +337,17 @@ input[type="range"]:active::-webkit-slider-thumb {
 .controls button:hover {
   background: #ffd633;
 }
+@media (max-width: 600px) {
+  .card-stack {
+    width: 90%;
+    height: auto;
+  }
+
+  .card {
+    height: auto;
+    aspect-ratio: 3/4;
+  }
+}
 
     </style>
     <script>
@@ -435,6 +446,52 @@ function resetStack() {
                 }
             });
         });
+        document.addEventListener("DOMContentLoaded", function() {
+  const audio = document.getElementById("audio");
+  const playPauseBtn = document.getElementById("play-pause");
+
+  playPauseBtn.addEventListener("click", function () {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = "⏸️";
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = "▶️";
+    }
+  });
+
+  audio.addEventListener("timeupdate", function () {
+    const progress = document.getElementById("progress");
+    progress.value = (audio.currentTime / audio.duration) * 100;
+  });
+
+  document.getElementById("progress").addEventListener("input", function () {
+    audio.currentTime = (this.value / 100) * audio.duration;
+  });
+});
+document.addEventListener("DOMContentLoaded", function() {
+  const audio = document.getElementById("audio");
+  const playPauseBtn = document.getElementById("play-pause");
+
+  playPauseBtn.addEventListener("click", function () {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = "⏸️";
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = "▶️";
+    }
+  });
+
+  audio.addEventListener("timeupdate", function () {
+    const progress = document.getElementById("progress");
+    progress.value = (audio.currentTime / audio.duration) * 100;
+  });
+
+  document.getElementById("progress").addEventListener("input", function () {
+    audio.currentTime = (this.value / 100) * audio.duration;
+  });
+});
     </script>
 </head>
 <body>
@@ -459,7 +516,7 @@ function resetStack() {
     <div class="message">🎉 สุขสันต์วันเกิดนะคุณชลญาณ์ 🎂<br>ขอให้วันนี้เป็นวันที่แสนพิเศษ 🎈<br>ขอให้มีความสุขมากๆ นะ! รักที่สุด 💕</div>
      <div class="music-player" style="display: none;">
       <div class="artwork">
-        <Image src="รูปวิว/316x316bb.webp" alt="Album Art">
+        <img src="รูปวิว/316x316bb.webp" alt="Album Art">
       </div>
       <div class="song-info">
         <div class="title">Blue</div>
@@ -501,6 +558,12 @@ function resetStack() {
     <div class="card" style="background-image: url('รูปวิว/2..jpeg');"></div>
     <div class="card" style="background-image: url('รูปวิว/3..jpg');"></div>
     <div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/5.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/6.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
+    <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
   </div>
 </div>
 <!-- ✅ JavaScript สำหรับ Swipe -->
