@@ -134,11 +134,30 @@
       .video-section {
   position: relative;
   width: 100%;
-  max-width: 900px; /* ปรับได้ตามความต้องการ */
+  max-width: 900px;
   margin: 300px auto;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ เพิ่ม Media Query */
+@media (max-width: 768px) {
+  .video-section {
+    margin: 120px auto; /* ลดระยะห่างลงบนมือถือ */
+    width: 90%;
+  }
+
+  .stack-container {
+    transform: scale(0.85); /* ย่อ stack ให้เล็กลงในมือถือ */
+    margin-top: 20px;
+  }
+
+  iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
 }
 
 .video-section::before {
@@ -197,29 +216,7 @@
                 padding: 15px;
             }
         }
-        @media (max-width: 768px) {
-  .video-section {
-    width: 90%;
-    margin-top: 80px; /* เพิ่มระยะห่างจาก stack ไพ่ */
-  }
-
-  .stack-container {
-    transform: scale(0.85); /* ย่อขนาด stack ไพ่ให้พอดีกับหน้าจอมือถือ */
-    margin-top: 30px;
-  }
-
-  .gift-box {
-    transform: scale(0.8);
-    bottom: 40px;
-    right: 20px;
-  }
-
-  iframe {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 16 / 9;
-  }
-}
+       
 
         .card-stack {
     position: relative;
@@ -510,7 +507,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
 สุขสันต์วันเกิดนะ 🎉 ขอให้หัวใจเต็มไปด้วยความสุขเยอะๆ เลยนะ 💖
 ขอให้มีความสุขมากๆ นะ! รักที่สุด 💗🌟 <br>
+
 </div>
+ <div class="video-container" style="display: none;">
+  <iframe 
+    width="500" 
+    height="315" 
+    src="https://www.youtube.com/embed/SjE_V8uNf1Q" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    allowfullscreen>
+  </iframe>
+</div>
+
   <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
 <div class="swipe-container" style="display: none;">
   <div class="card-stack" id="cardStack">
@@ -527,17 +537,7 @@ document.addEventListener("DOMContentLoaded", function() {
   </div>
 </div>
 
-   <div class="video-container" style="display: none;">
-  <iframe 
-    width="500" 
-    height="315" 
-    src="https://www.youtube.com/embed/SjE_V8uNf1Q" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    allowfullscreen>
-  </iframe>
-</div>
+  
 </body>
 
 <!-- ✅ JavaScript สำหรับ Swipe -->
