@@ -135,7 +135,7 @@
   position: relative;
   width: 100%;
   max-width: 900px; /* ปรับได้ตามความต้องการ */
-  margin: 40px auto;
+  margin: 300px auto;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -197,6 +197,30 @@
                 padding: 15px;
             }
         }
+        @media (max-width: 768px) {
+  .video-section {
+    width: 90%;
+    margin-top: 80px; /* เพิ่มระยะห่างจาก stack ไพ่ */
+  }
+
+  .stack-container {
+    transform: scale(0.85); /* ย่อขนาด stack ไพ่ให้พอดีกับหน้าจอมือถือ */
+    margin-top: 30px;
+  }
+
+  .gift-box {
+    transform: scale(0.8);
+    bottom: 40px;
+    right: 20px;
+  }
+
+  iframe {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+  }
+}
+
         .card-stack {
     position: relative;
     width: 400px;
