@@ -316,6 +316,30 @@
   }
 }
 
+.wrapper {
+  max-width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.message-box,
+.music-player,
+#birthdayMessage,
+.video-container,
+.swipe-container {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+#birthdayMessage p {
+  font-size: 16px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  text-align: left;
+}
+
     </style>
     <script>
         function checkPassword() {
@@ -470,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function() {
    <div class="music-player" style="display: none;">
   <img src="รูปวิว/316x316bb.webp" alt="Album Cover" class="cover-art">
   <div class="song-info">
-    <p class=""song-title">Blue Young kai</p>
+    <p class="song-title">Blue Young kai</p>
   </div>
   <div class="controls">
     <button id="play-pause" class="play-btn">▶</button>
@@ -509,7 +533,8 @@ document.addEventListener("DOMContentLoaded", function() {
 ขอให้มีความสุขมากๆ นะ! รักที่สุด 💗🌟 <br>
 
 </div>
- <div class="video-container" style="display: none;">
+
+<div class="video-container" style="display: none;">
   <iframe 
     width="500" 
     height="315" 
@@ -524,9 +549,9 @@ document.addEventListener("DOMContentLoaded", function() {
   <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
 <div class="swipe-container" style="display: none;">
   <div class="card-stack" id="cardStack">
-    <div class="card" style="background-image: url('รูปวิว/1..jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/2..jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/3..jpg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/1.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/2.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/3.jpg');"></div>
     <div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
     <div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
     <div class="card" style="background-image: url('รูปวิว/5.jpeg');"></div>
