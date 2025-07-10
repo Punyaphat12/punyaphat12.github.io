@@ -217,8 +217,7 @@
                 padding: 15px;
             }
         }
-       
-
+      
         .card-stack {
     position: relative;
     width: 400px;
@@ -339,6 +338,7 @@
     document.querySelector(".swipe-container").style.display = "block"; // ✅ แสดง Swipe Stack
     document.getElementById('birthdayMessage').style.display = "block";
     document.querySelector(".video-container").style.display = "block";
+    document.querySelector(".gift-box").style.display = "block";
     showFireworks();
     resetPositions(); // ✅ จัด Stack ใหม่หลังแสดง
   }, 1500);
@@ -441,6 +441,7 @@ document.addEventListener("DOMContentLoaded", function() {
     audio.currentTime = (this.value / 100) * audio.duration;
   });
 });
+    
     </script>
 </head>
 <body>
@@ -451,7 +452,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <br>
       <button onclick="checkPassword()">⚡ ปลดล็อค ⚡</button>
     </div>
+   
     <div class="card-container" onclick="openCard()">
+
       <div class="birthday-card">
         <div class="front">
           <img src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/MSNBC/Components/Photo/_new/100506-ironman2-hmed.jpg" alt="Happy Birthday">
@@ -507,6 +510,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </div>
 
+
  <div class="video-container" style="display: none;">
   <iframe 
     width="500" 
@@ -532,8 +536,11 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
     <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
     <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/10.gif');"></div>
+    <div class="card" style="background-image: url('รูปวิว/11.gif');"></div>
   </div>
 </div>
+
 
 </body>
 
@@ -635,8 +642,6 @@ document.addEventListener("DOMContentLoaded", function() {
         audio.currentTime = (progress.value / 100) * audio.duration;
       }
     });
-    
-
     </script>
     </body>
 </html>
