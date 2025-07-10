@@ -22,7 +22,9 @@
     font-family: Arial, sans-serif;
     color: #fff;
     overflow-y: auto;         /* ให้เลื่อนหน้าจอถ้าเนื้อหายาว */
-    padding: 10px;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
 }
 .wrapper {
@@ -30,9 +32,15 @@
     flex-direction: column;
     justify-content: center;  /* กึ่งกลางแนวตั้ง */
     align-items: center;      /* กึ่งกลางแนวนอน */
-    width: 100%;
-    max-width: 420px;         /* กำหนด max ความกว้าง */
+    width: 100%;      /* กำหนด max ความกว้าง */
     gap: 20px;                /* เว้นช่องห่างระหว่าง element */
+}
+.card-container,
+.video-container,
+.music-player,
+.swipe-container {
+  width: 100%;
+  max-width: 100%;
 }
         .lock-screen {
             text-align: center;
@@ -131,15 +139,7 @@
             opacity: 0;
             animation: fadeIn 1s ease-in-out forwards;
         }
-      .video-section {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  margin: 300px auto;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
+    
 
 /* ✅ เพิ่ม Media Query */
 @media (max-width: 768px) {
@@ -174,6 +174,7 @@
   height: 100%;
   border: none;
 }
+
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -316,30 +317,6 @@
   }
 }
 
-.wrapper {
-  max-width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
-
-.message-box,
-.music-player,
-#birthdayMessage,
-.video-container,
-.swipe-container {
-  max-width: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  word-wrap: break-word;
-}
-#birthdayMessage p {
-  font-size: 16px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  text-align: left;
-}
-
     </style>
     <script>
         function checkPassword() {
@@ -437,10 +414,6 @@ function resetStack() {
                 }
             });
         });
-  audio.addEventListener("timeupdate", function () {
-    const progress = document.getElementById("progress");
-    progress.value = (audio.currentTime / audio.duration) * 100;
-  });
 
   document.getElementById("progress").addEventListener("input", function () {
     audio.currentTime = (this.value / 100) * audio.duration;
@@ -494,7 +467,7 @@ document.addEventListener("DOMContentLoaded", function() {
    <div class="music-player" style="display: none;">
   <img src="รูปวิว/316x316bb.webp" alt="Album Cover" class="cover-art">
   <div class="song-info">
-    <p class="song-title">Blue Young kai</p>
+    <p class=""song-title">Blue Young kai</p>
   </div>
   <div class="controls">
     <button id="play-pause" class="play-btn">▶</button>
@@ -534,7 +507,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </div>
 
-<div class="video-container" style="display: none;">
+ <div class="video-container" style="display: none;">
   <iframe 
     width="500" 
     height="315" 
@@ -562,7 +535,6 @@ document.addEventListener("DOMContentLoaded", function() {
   </div>
 </div>
 
-  
 </body>
 
 <!-- ✅ JavaScript สำหรับ Swipe -->
@@ -666,6 +638,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
 
     </script>
+    </body>
 </html>
 
 
