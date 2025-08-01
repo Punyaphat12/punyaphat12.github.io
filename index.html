@@ -27,6 +27,7 @@
     margin: 0;
     box-sizing: border-box;
 }
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -308,6 +309,7 @@
   .card-stack {
     width: 90%;
     height: auto;
+    min-height: 400px;
   }
 
   .card {
@@ -315,6 +317,41 @@
     aspect-ratio: 3/4;
   }
 }
+
+.bubble {
+  position: fixed;
+  left: 0; /* จะตั้งเป็นค่า left แบบสุ่มใน JS */
+  bottom: 0; /* เริ่มลอยจากขอบล่างหน้าจอ */
+  background: rgba(250, 250, 250, 0.9);
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  opacity: 1;
+  white-space: nowrap;
+  user-select: none;
+  animation: floatUpFade 20s ease forwards;
+  pointer-events: none; /* ไม่บล็อกคลิก */
+  will-change: transform, opacity;
+}
+
+@keyframes floatUpFade {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh); /* ลอยขึ้นสูงเท่าความสูงหน้าจอ */
+    opacity: 0;
+  }
+}
+
+#volumeSlider {
+  width: 120px;
+  margin-top: 8px;
+}
+
 
     </style>
     <script>
@@ -335,14 +372,23 @@
     document.querySelector(".card-container").style.display = "none";
     document.querySelector(".message").style.display = "block";
     document.querySelector(".music-player").style.display = "block";
-    document.querySelector(".swipe-container").style.display = "block"; // ✅ แสดง Swipe Stack
+    document.querySelector(".swipe-container").style.display = "block";
     document.getElementById('birthdayMessage').style.display = "block";
     document.querySelector(".video-container").style.display = "block";
-    document.querySelector(".gift-box").style.display = "block";
+    document.getElementById("flipSound").play();
+    
+const audio = document.getElementById("audio");
+    audio.play();
+
     showFireworks();
-    resetPositions(); // ✅ จัด Stack ใหม่หลังแสดง
+    resetPositions();
+    startBubbles(); 
   }, 1500);
 }
+
+   
+
+
 function shiftStack() {
   const cards = document.querySelectorAll('.card-stack .card');
 
@@ -405,43 +451,7 @@ function resetStack() {
             })();
         }
 
-        // ให้สามารถกด Enter เพื่อปลดล็อคการ์ด
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("password").addEventListener("keypress", function(event) {
-                if (event.key === "Enter") {
-                    event.preventDefault(); // ป้องกันการรีเฟรชหน้าเว็บ
-                    checkPassword();
-                }
-            });
-        });
 
-  document.getElementById("progress").addEventListener("input", function () {
-    audio.currentTime = (this.value / 100) * audio.duration;
-  });
-document.addEventListener("DOMContentLoaded", function() {
-  const audio = document.getElementById("audio");
-  const playPauseBtn = document.getElementById("play-pause");
-
-  playPauseBtn.addEventListener("click", function () {
-    if (audio.paused) {
-      audio.play();
-      playPauseBtn.textContent = "⏸";
-    } else {
-      audio.pause();
-      playPauseBtn.textContent = "▶";
-    }
-  });
-
-  audio.addEventListener("timeupdate", function () {
-    const progress = document.getElementById("progress");
-    progress.value = (audio.currentTime / audio.duration) * 100;
-  });
-
-  document.getElementById("progress").addEventListener("input", function () {
-    audio.currentTime = (this.value / 100) * audio.duration;
-  });
-});
-    
     </script>
 </head>
 <body>
@@ -452,9 +462,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <br>
       <button onclick="checkPassword()">⚡ ปลดล็อค ⚡</button>
     </div>
-   
-    <div class="card-container" onclick="openCard()">
 
+    <div class="card-container" onclick="openCard()">
+<audio id="flipSound" src="audio/pageturn-102978.mp3"></audio>
       <div class="birthday-card">
         <div class="front">
           <img src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/MSNBC/Components/Photo/_new/100506-ironman2-hmed.jpg" alt="Happy Birthday">
@@ -462,19 +472,22 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="back">
           🎂 สุขสันต์วันเกิด! 🎈<br>
           ขอให้มีความสุขมากๆ นะ! 💖
-        </div>
+         </div>
       </div>
     </div>
+      
+    
+    
     <div class="message">🎉 สุขสันต์วันเกิดนะคุณชลญาณ์ 🎂<br>ขอให้วันนี้เป็นวันที่แสนพิเศษ 🎈<br>ขอให้มีความสุขมากๆ  💕</div>
    
    <div class="music-player" style="display: none;">
   <img src="รูปวิว/316x316bb.webp" alt="Album Cover" class="cover-art">
   <div class="song-info">
-    <p class=""song-title">Blue Young kai</p>
+    <p class="song-title">Blue Young kai</p>
   </div>
   <div class="controls">
-    <button id="play-pause" class="play-btn">▶</button>
     <audio id="audio" src="audio/yung kai blue official audio.mp3"></audio>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" />
   </div>
 </div>
    
@@ -511,17 +524,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 
 
+   
  <div class="video-container" style="display: none;">
   <iframe 
+  id="youtubeVideo"
     width="500" 
     height="315" 
-    src="https://www.youtube.com/embed/SjE_V8uNf1Q" 
+    src="https://www.youtube.com/embed/SjE_V8uNf1Q?enablejsapi=1" 
     title="YouTube video player" 
     frameborder="0" 
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
     allowfullscreen>
   </iframe>
-</div>
+  </div>
+
 
   <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
 <div class="swipe-container" style="display: none;">
@@ -536,11 +552,19 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
     <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
     <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/10.gif');"></div>
-    <div class="card" style="background-image: url('รูปวิว/11.gif');"></div>
-  </div>
 </div>
+<!-- 🐾 สัตว์เลี้ยงเดินเล่น -->
 
+<div id="bubble-container" style="
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: visible;
+"></div>
 
 </body>
 
@@ -616,32 +640,172 @@ document.addEventListener("DOMContentLoaded", function() {
 
   resetPositions();
 
-    const audio = document.getElementById('audio');
-    const playPauseBtn = document.getElementById('play-pause');
-    const progress = document.getElementById('progress');
+  document.addEventListener("DOMContentLoaded", function () {
+    // 🔐 Enter เพื่อปลดล็อก
+    document.getElementById("password").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        checkPassword();
+      }
+    });
 
-    playPauseBtn.addEventListener('click', () => {
+    // 🔊 ระบบเครื่องเล่นเพลง
+    const audio = document.getElementById("audio");
+    const playPauseBtn = document.getElementById("play-pause");
+    const progress = document.getElementById("progress");
+
+    playPauseBtn.addEventListener("click", () => {
       if (audio.paused) {
         audio.play();
         playPauseBtn.textContent = '⏸';
       } else {
         audio.pause();
-        playPauseBtn.textContent = '  ▶';
+        playPauseBtn.textContent = '▶';
       }
     });
 
-    audio.addEventListener('timeupdate', () => {
+    audio.addEventListener("timeupdate", () => {
       if (audio.duration) {
         const progressPercent = (audio.currentTime / audio.duration) * 100;
         progress.value = progressPercent;
       }
     });
 
-    progress.addEventListener('input', () => {
+    progress.addEventListener("input", () => {
       if (audio.duration) {
         audio.currentTime = (progress.value / 100) * audio.duration;
       }
     });
+  });
+
+  const audio = document.getElementById("audio");
+const volumeSlider = document.getElementById("volumeSlider");
+
+// ตั้งค่าเริ่มต้น
+audio.volume = volumeSlider.value;
+
+// เปลี่ยนระดับเสียงเมื่อเลื่อน
+volumeSlider.addEventListener("input", function () {
+  audio.volume = this.value;
+});
+
+
+const bubbleContainer = document.getElementById('bubble-container');
+const messages = [
+  "สุขสันต์วันเกิดนะ! 🎉🥳",
+  "ขอให้มีความสุขมากๆ 💖😊",
+  "วันนี้เป็นวันพิเศษ 🎈✨",
+  "ขอให้สมหวังทุกอย่างนะ! 🍀🌟",
+  "ยิ้มเยอะๆ นะ 😊😁",
+  "สุขภาพแข็งแรงนะครับ 💪🌿",
+  "ขอให้เจอแต่สิ่งดีๆ 🌸🌞",
+  "มีความสุขทุกวันเลยนะ! 🎂🎁",
+  "ขอให้ความฝันเป็นจริงทุกประการ! 🌈🌟",
+  "รักและโชคดีเสมอ! ❤️🍀",
+  "เป็นวันที่ดีนะ! ☀️🌻",
+  "หัวเราะเยอะๆ นะ! 😄😂",
+  "โชคดีตลอดปี! 🍀🎊",
+  "ประสบความสำเร็จในทุกอย่าง! 🏆🚀",
+  "สนุกกับวันเกิด! 🎉🎂",
+  "ขอให้ปีนี้เต็มไปด้วยความรัก! 💕💞",
+  "สุขภาพแข็งแรงและปลอดภัย! 💪🛡️",
+  "เติมเต็มด้วยรอยยิ้ม! 😁🌟",
+  "ความสุขอยู่กับคุณเสมอ! 😊💐",
+  "ขอให้สมหวังในทุกสิ่ง! 🍀🙏",
+  "มีแต่คนรักและห่วงใย! ❤️🤗",
+  "ชีวิตสดใส! ☀️🌈",
+  "เดินทางปลอดภัย! 🚗🛣️",
+  "เจอแต่สิ่งดีๆ! 🌷🌟",
+  "คิดดี ทำดี ได้ดี! 🤔👍",
+  "ขอให้ใจสงบและมีความสุข! 🧘‍♂️💖",
+  "วันดีๆ สำหรับคนดี! 🌞🌹",
+  "พบเจอแต่สิ่งสวยงาม! 🌺🌻",
+  "ทุกวันคือของขวัญ! 🎁🎉",
+  "จงเชื่อมั่นในตัวเอง! 💪🌟",
+  "ความรักเติมเต็มใจ! ❤️😊",
+  "ความสำเร็จอยู่ไม่ไกล! 🏅🚀",
+  "มีแรงบันดาลใจทุกวัน! 🌞🔥",
+  "สนุกกับทุกช่วงเวลา! 😄🎈",
+  "ขอให้ได้พบความสุขแท้จริง! 💖🌈",
+  "วันนี้สดใสเสมอ! ☀️😊",
+  "รักตัวเองให้มากขึ้น! 💕🌷",
+  "ยิ้มรับทุกเรื่อง! 😁🌟",
+  "ขอให้ใจเบิกบาน! 💖✨",
+  "ทำทุกวันให้ดีที่สุด! 💪🎯",
+  "อยู่กับคนที่รัก! ❤️🤗",
+  "เติมพลังใจทุกวัน! ⚡💖",
+  "มีแต่ความเจริญ! 🚀🌟",
+  "ชีวิตรุ่งโรจน์! 🌞🏆",
+  "ขอให้ฝันเป็นจริง! 🌈✨",
+  "โชคดีในทุกๆ ด้าน! 🍀😊",
+  "สุขภาพดีไม่มีโรค! 💪🍎",
+  "พบเจอแต่ความสงบ! 🧘‍♀️🌿",
+  "หัวใจเต็มไปด้วยความสุข! ❤️😊",
+  "ขอให้วันนี้เป็นวันที่ดีที่สุด! 🎉🌟"
+];
+
+
+function createBubble() {
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
+  
+  // เลือกข้อความสุ่ม
+  const msg = messages[Math.floor(Math.random() * messages.length)];
+  bubble.textContent = msg;
+  
+  // ตั้งตำแหน่งแนวนอนแบบสุ่มใน viewport
+  const vw = window.innerWidth;
+  const posX = Math.random() * (vw - 150); // 150px เผื่อความกว้าง bubble
+  bubble.style.left = `${posX}px`;
+  
+  bubbleContainer.appendChild(bubble);
+  
+  // ลบ bubble หลัง animation จบ (5 วิ)
+  setTimeout(() => {
+    bubble.remove();
+  }, 20000);
+}
+
+let bubbleInterval;
+function startBubbles() {
+  bubbleInterval = setInterval(createBubble, 1200);
+
+  // หยุดสร้าง bubble หลัง 50 วินาที (50000 ms)
+  setTimeout(() => {
+    clearInterval(bubbleInterval);
+  }, 50000);
+}
+
+// โหลด YouTube iframe API
+let tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.body.appendChild(tag);
+
+let player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('youtubeVideo', {
+    events: {
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+
+function onPlayerStateChange(event) {
+  const audio = document.getElementById("audio");
+  if (event.data === YT.PlayerState.PLAYING) {
+    // วิดีโอเริ่มเล่น => หยุดเพลง
+    audio.pause();
+    document.getElementById("play-pause").textContent = "▶"; // ปรับปุ่มเล่นเพลงด้วย
+  } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+    // วิดีโอหยุดหรือจบ => เล่นเพลงต่อ (ถ้าต้องการ)
+    audio.play();
+    document.getElementById("play-pause").textContent = "⏸";
+  }
+}
+
+
+
+
     </script>
     </body>
 </html>
