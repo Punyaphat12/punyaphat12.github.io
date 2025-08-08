@@ -352,7 +352,35 @@
   margin-top: 8px;
 }
 
+#giftBox {
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
 
+#giftBox:hover {
+  transform: scale(1.05);
+}
+
+#secretContent {
+  display: none;
+  margin-top: 20px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.song-message {
+  color: #ffe600; /* เปลี่ยนเป็นสีเหลืองทอง */
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.surprise-heading {
+  color: #ffe600; /* เปลี่ยนสีตามที่ต้องการ */
+}
     </style>
     <script>
         function checkPassword() {
@@ -373,9 +401,11 @@
     document.querySelector(".message").style.display = "block";
     document.querySelector(".music-player").style.display = "block";
     document.querySelector(".swipe-container").style.display = "block";
+    document.getElementById("giftBox").style.display = "block";
     document.getElementById('birthdayMessage').style.display = "block";
-    document.querySelector(".video-container").style.display = "block";
     document.getElementById("flipSound").play();
+ 
+
     
 const audio = document.getElementById("audio");
     audio.play();
@@ -483,7 +513,7 @@ function resetStack() {
    <div class="music-player" style="display: none;">
   <img src="รูปวิว/316x316bb.webp" alt="Album Cover" class="cover-art">
   <div class="song-info">
-    <p class="song-title">Blue Young kai</p>
+    <p class="song-title">Blue Young kai</p> 
   </div>
   <div class="controls">
     <audio id="audio" src="audio/yung kai blue official audio.mp3"></audio>
@@ -525,18 +555,17 @@ function resetStack() {
 
 
    
- <div class="video-container" style="display: none;">
-  <iframe 
-  id="youtubeVideo"
-    width="500" 
-    height="315" 
-    src="https://www.youtube.com/embed/SjE_V8uNf1Q?enablejsapi=1" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    allowfullscreen>
-  </iframe>
-  </div>
+<div id="giftBox" style="display: none;">
+  <img id="giftImage" src="รูปวิว/GIF.png"style="width: 250px; height: 250px;" />
+</div>
+<div id="secretContent" style="display: none;">
+  <!-- เช่น วิดีโอ YouTube -->
+   <h2 class="surprise-heading">🎉 SURPRISE 🎉</h2>
+    <p class="song-message">สนุกกับเพลงน้าาา5555
+  <iframe id="youtubeVideo" src="https://www.youtube.com/embed/SjE_V8uNf1Q?enablejsapi=1" width="500" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+
 
 
   <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
@@ -552,8 +581,8 @@ function resetStack() {
     <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
     <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
     <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
+
 </div>
-<!-- 🐾 สัตว์เลี้ยงเดินเล่น -->
 
 <div id="bubble-container" style="
   position: fixed;
@@ -806,8 +835,26 @@ function onPlayerStateChange(event) {
 
 
 
+
+  const giftBox = document.getElementById("giftBox");
+const giftImage = document.getElementById("giftImage");
+const secretContent = document.getElementById("secretContent");
+let opened = false;
+
+giftBox.addEventListener("click", () => {
+  if (opened) return;
+  opened = true;
+  secretContent.style.display = "block";
+
+  confetti({
+    particleCount: 200,
+    spread: 100,
+    origin: { y: 0.6 }
+  });
+});
+
+
     </script>
-    </body>
 </html>
 
 
