@@ -245,45 +245,95 @@
 .card:nth-child(4) { z-index: 1; top: 45px; left: 45px; transform: scale(0.85); }
 
   .music-player {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 500px;
-  padding: 10px 15px;
-  margin: 20px auto;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
+  width: 300px;
+  padding: 15px;
+  background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  text-align: center;
   color: white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  gap: 10px;
+  font-family: Arial, sans-serif;
 }
 
 .cover-art {
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-  object-fit: cover;
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
 .song-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
+  margin: 10px 0;
 }
 
 .song-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
+  margin: 0;
 }
 
 .controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  margin-top: 10px;
+}
+
+.play-btn {
+  background: #ff4081;
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.play-btn:hover {
+  background: #e91e63;
+  transform: scale(1.1);
+}
+
+.progress-bar {
+  width: 100%;
+  margin: 5px 0;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  background: #888;
+  border-radius: 3px;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ff4081;
+  cursor: pointer;
+}
+
+.volume-slider {
+  width: 100%;
+  margin-top: 5px;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  background: #666;
+  border-radius: 3px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2196f3;
+  cursor: pointer;
 }
 
 
@@ -382,8 +432,134 @@
   color: #ffe600; /* เปลี่ยนสีตามที่ต้องการ */
 }
     </style>
-    <script>
-        function checkPassword() {
+ 
+</head>
+<body>
+  <div class="wrapper">
+    <div class="lock-screen">
+      <h2>🦾 ใส่รหัสผ่านเพื่อปลดล็อคการ์ดวันเกิด 🎉</h2>
+      <input type="password" id="password" placeholder="🔒 ใส่รหัสที่นี่">
+      <br>
+      <button onclick="checkPassword()">⚡ ปลดล็อค ⚡</button>
+    </div>
+
+    <div class="card-container" onclick="openCard()">
+<audio id="flipSound" src="audio/pageturn-102978.mp3"></audio>
+      <div class="birthday-card">
+        <div class="front">
+          <img src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/MSNBC/Components/Photo/_new/100506-ironman2-hmed.jpg" alt="Happy Birthday">
+        </div>
+        <div class="back">
+          🎂 สุขสันต์วันเกิด! 🎈<br>
+          ขอให้มีความสุขมากๆ นะ! 💖
+         </div>
+      </div>
+    </div>
+      
+    
+    
+    <div class="message">🎉 สุขสันต์วันเกิดนะคุณชลญาณ์ 🎂<br>ขอให้วันนี้เป็นวันที่แสนพิเศษ 🎈<br>ขอให้มีความสุขมากๆ  💕</div>
+   
+   <div class="music-player" style="display: none;">
+  <img src="รูปวิว/316x316bb.webp" alt="Album Cover" class="cover-art" id="cover-art">
+  <div class="song-info">
+    <p class="song-title" id="song-title">Blue Young kai</p>
+  </div>
+  <div class="controls">
+    <audio id="audio"></audio> <!-- ✅ เหลือแค่ตัวเดียว -->
+
+    <!-- ✅ ปุ่มเล่น/หยุด -->
+    <button id="play-pause">▶</button>
+
+    <!-- ✅ แถบเลื่อนเสียง -->
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" />
+
+    <!-- ✅ แถบ progress -->
+    <input type="range" id="progress" min="0" max="100" step="1" value="0" />
+  </div>
+</div>
+
+
+   
+  
+
+<!-- ✅ ข้อความสุขสันต์วันเกิด (ซ่อนอยู่ก่อน) -->
+<div id="birthdayMessage" class="message" style="display: none; text-align: center; font-size: 22px; color: hsl(0, 0%, 100%); margin: 20px 0;">
+  สุขสันต์วันเกิดนะ 🎉🎂 <br>
+วันนี้เป็นวันพิเศษของวิวอีกปีแล้ว 🎈 เวลาเดินเร็วมากเลยเนอะ 🕒 เผลอแป๊บๆ ก็ถึงวันเกิดวิวอีกเเล้ว 💫 จำได้ว่าครั้งนึงเราเคยได้อยู่ข้างๆ กันในวันแบบนี้ 🤝
+
+ถึงตอนนี้บทบาทของพี่จะเปลี่ยนไป 🍃 แต่ก็ยังอยากส่งข้อความนี้มาให้ 💌 เพราะวันเกิดของเรา ก็ยังเป็นวันที่สำคัญวันหนึ่งสำหรับคนที่เคยมีความหมายในชีวิตกัน 🧡
+
+ขอให้ปีนี้เป็นปีที่ดีสำหรับวิวจริงๆ นะ ✨
+ขอให้ทุกอย่างที่วางแผนไว้ สำเร็จไปได้ด้วยดี 📈
+เจอแต่สิ่งดีๆ 💐 เจอแต่คนจริงใจ 🤍 เจอแต่โอกาสใหม่ๆ ที่ทำให้ใจวิวรู้สึกมีค่าและมีพลังทุกวัน 🌞
+
+สุขภาพแข็งแรง 💪 หัวเราะได้บ่อยๆ 😄
+ไม่ว่าจะเหนื่อย จะท้อ จะเจอเรื่องแย่แค่ไหน 😥 ก็ขอให้ผ่านมันไปได้ 🌈 และมีวันที่ดีรออยู่เสมอ 🍀
+
+ถึงแม้ตอนนี้เราอาจไม่ได้เป็นคนที่ได้เดินข้างๆ กัน 🚶‍♂️🚶‍♀️ หรือเป็นคนที่รับรู้เรื่องราวในแต่ละวันของกันเหมือนเมื่อก่อนแล้ว ⏳ แต่ก็ยังหวังดีเสมอนะ 🤍
+
+ยังขอให้วิวมีความสุขในแบบของตัวเอง 😊
+และก็ขอให้คนๆ นั้นทำให้วิวยิ้มได้มากกว่าเศร้า 😄💛
+ให้กำลังใจได้ในวันที่อ่อนล้า 🤗
+และเป็นเพื่อนที่ดีในทุกๆ เวลานะ 🫶
+
+ขอบคุณที่ครั้งนึงเคยเป็นความสุขดีๆ ในช่วงชีวิตของกันและกัน 💫
+ถึงมันจะเป็นแค่ความทรงจำไปแล้วก็ตาม 📸
+แต่มันก็เป็นความทรงจำที่ดีเสมอของพี่ 💭
+
+สุขสันต์วันเกิดนะ 🎉 ขอให้หัวใจเต็มไปด้วยความสุขเยอะๆ เลยนะ 💖
+ขอให้มีความสุขมากๆ นะ! รักที่สุดเลย 💗🌟 <br>
+
+</div>
+
+
+   
+<div id="giftBox" style="display: none;">
+  <img id="giftImage" src="รูปวิว/GIF.png"style="width: 300px; height: 300px;" />
+</div>
+<div id="secretContent" style="display: none;">
+  <!-- เช่น วิดีโอ YouTube -->
+   <h2 class="surprise-heading">🎉 SURPRISE 🎉</h2>
+    <p class="song-message">สนุกกับเพลงน้าาา5555
+  <iframe id="youtubeVideo" src="https://www.youtube.com/embed/SjE_V8uNf1Q?enablejsapi=1" width="500" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+
+
+
+  <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
+<div class="swipe-container" style="display: none;">
+  <div class="card-stack" id="cardStack">
+    <div class="card" style="background-image: url('รูปวิว/1.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/2.jpeg');"></div>      
+    <div class="card" style="background-image: url('รูปวิว/3.jpg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/5.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/6.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
+    <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
+
+</div>
+
+<div id="bubble-container" style="
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: visible;
+"></div>
+
+</body>
+
+
+<script>
+function checkPassword() {
             let password = document.getElementById("password").value;
             if (password === "101047") {
                 document.querySelector(".lock-screen").style.display = "none";
@@ -481,124 +657,6 @@ function resetStack() {
             })();
         }
 
-
-    </script>
-</head>
-<body>
-  <div class="wrapper">
-    <div class="lock-screen">
-      <h2>🦾 ใส่รหัสผ่านเพื่อปลดล็อคการ์ดวันเกิด 🎉</h2>
-      <input type="password" id="password" placeholder="🔒 ใส่รหัสที่นี่">
-      <br>
-      <button onclick="checkPassword()">⚡ ปลดล็อค ⚡</button>
-    </div>
-
-    <div class="card-container" onclick="openCard()">
-<audio id="flipSound" src="audio/pageturn-102978.mp3"></audio>
-      <div class="birthday-card">
-        <div class="front">
-          <img src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/MSNBC/Components/Photo/_new/100506-ironman2-hmed.jpg" alt="Happy Birthday">
-        </div>
-        <div class="back">
-          🎂 สุขสันต์วันเกิด! 🎈<br>
-          ขอให้มีความสุขมากๆ นะ! 💖
-         </div>
-      </div>
-    </div>
-      
-    
-    
-    <div class="message">🎉 สุขสันต์วันเกิดนะคุณชลญาณ์ 🎂<br>ขอให้วันนี้เป็นวันที่แสนพิเศษ 🎈<br>ขอให้มีความสุขมากๆ  💕</div>
-   
-   <div class="music-player" style="display: none;">
-  <img src="รูปวิว/316x316bb.webp" alt="Album Cover" class="cover-art">
-  <div class="song-info">
-    <p class="song-title">Blue Young kai</p> 
-  </div>
-  <div class="controls">
-    <audio id="audio" src="audio/yung kai blue official audio.mp3"></audio>
-    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" />
-  </div>
-</div>
-   
-  
-
-<!-- ✅ ข้อความสุขสันต์วันเกิด (ซ่อนอยู่ก่อน) -->
-<div id="birthdayMessage" class="message" style="display: none; text-align: center; font-size: 22px; color: hsl(0, 0%, 100%); margin: 20px 0;">
-  สุขสันต์วันเกิดนะ 🎉🎂 <br>
-วันนี้เป็นวันพิเศษของวิวอีกปีหนึ่งแล้ว 🎈 เวลาเดินเร็วมากเลยเนอะ 🕒 เผลอแป๊บๆ ก็ถึงวันเกิดวิวอีกเเล้ว 💫 จำได้ว่าครั้งนึงเราเคยได้อยู่ข้างๆ กันในวันแบบนี้ 🤝
-
-ถึงตอนนี้บทบาทของพี่จะเปลี่ยนไป 🍃 แต่ก็ยังอยากส่งข้อความนี้มาให้ 💌 เพราะวันเกิดของเรา ก็ยังเป็นวันที่สำคัญวันหนึ่งสำหรับคนที่เคยมีความหมายในชีวิตกัน 🧡
-
-ขอให้ปีนี้เป็นปีที่ดีสำหรับวิวจริงๆ นะ ✨
-ขอให้ทุกอย่างที่วางแผนไว้ สำเร็จไปได้ด้วยดี 📈
-เจอแต่สิ่งดีๆ 💐 เจอแต่คนจริงใจ 🤍 เจอแต่โอกาสใหม่ๆ ที่ทำให้ใจวิวรู้สึกมีค่าและมีพลังทุกวัน 🌞
-
-สุขภาพแข็งแรง 💪 หัวเราะได้บ่อยๆ 😄
-ไม่ว่าจะเหนื่อย จะท้อ จะเจอเรื่องแย่แค่ไหน 😥 ก็ขอให้ผ่านมันไปได้ 🌈 และมีวันที่ดีรออยู่เสมอ 🍀
-
-ถึงแม้ตอนนี้เราอาจไม่ได้เป็นคนที่ได้เดินข้างๆ กัน 🚶‍♂️🚶‍♀️ หรือเป็นคนที่รับรู้เรื่องราวในแต่ละวันของกันเหมือนเมื่อก่อนแล้ว ⏳ แต่ก็ยังหวังดีเสมอนะ 🤍
-
-ยังขอให้วิวมีความสุขในแบบของตัวเอง 😊
-และก็ขอให้คนๆ นั้นทำให้วิวยิ้มได้มากกว่าเศร้า 😄💛
-ให้กำลังใจได้ในวันที่อ่อนล้า 🤗
-และเป็นเพื่อนที่ดีในทุกๆ เวลานะ 🫶
-
-ขอบคุณที่ครั้งนึงเคยเป็นความสุขดีๆ ในช่วงชีวิตของกันและกัน 💫
-ถึงมันจะเป็นแค่ความทรงจำไปแล้วก็ตาม 📸
-แต่มันก็เป็นความทรงจำที่ดีเสมอของพี่ 💭
-
-สุขสันต์วันเกิดนะ 🎉 ขอให้หัวใจเต็มไปด้วยความสุขเยอะๆ เลยนะ 💖
-ขอให้มีความสุขมากๆ นะ! รักที่สุด 💗🌟 <br>
-
-</div>
-
-
-   
-<div id="giftBox" style="display: none;">
-  <img id="giftImage" src="รูปวิว/GIF.png"style="width: 250px; height: 250px;" />
-</div>
-<div id="secretContent" style="display: none;">
-  <!-- เช่น วิดีโอ YouTube -->
-   <h2 class="surprise-heading">🎉 SURPRISE 🎉</h2>
-    <p class="song-message">สนุกกับเพลงน้าาา5555
-  <iframe id="youtubeVideo" src="https://www.youtube.com/embed/SjE_V8uNf1Q?enablejsapi=1" width="500" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-</div>
-
-
-
-
-  <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
-<div class="swipe-container" style="display: none;">
-  <div class="card-stack" id="cardStack">
-    <div class="card" style="background-image: url('รูปวิว/1.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/2.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/3.jpg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/5.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/6.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
-    <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
-
-</div>
-
-<div id="bubble-container" style="
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 9999;
-  overflow: visible;
-"></div>
-
-</body>
-
-<!-- ✅ JavaScript สำหรับ Swipe -->
-<script>
   const stack = document.getElementById('cardStack');
   let cards = stack.querySelectorAll('.card');
   let isDragging = false;
@@ -669,53 +727,85 @@ function resetStack() {
 
   resetPositions();
 
-  document.addEventListener("DOMContentLoaded", function () {
-    // 🔐 Enter เพื่อปลดล็อก
-    document.getElementById("password").addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        checkPassword();
-      }
-    });
-
-    // 🔊 ระบบเครื่องเล่นเพลง
-    const audio = document.getElementById("audio");
-    const playPauseBtn = document.getElementById("play-pause");
-    const progress = document.getElementById("progress");
-
-    playPauseBtn.addEventListener("click", () => {
-      if (audio.paused) {
-        audio.play();
-        playPauseBtn.textContent = '⏸';
-      } else {
-        audio.pause();
-        playPauseBtn.textContent = '▶';
-      }
-    });
-
-    audio.addEventListener("timeupdate", () => {
-      if (audio.duration) {
-        const progressPercent = (audio.currentTime / audio.duration) * 100;
-        progress.value = progressPercent;
-      }
-    });
-
-    progress.addEventListener("input", () => {
-      if (audio.duration) {
-        audio.currentTime = (progress.value / 100) * audio.duration;
-      }
-    });
+document.addEventListener("DOMContentLoaded", function () {
+  // 🔐 Enter เพื่อปลดล็อก
+  const passwordInput = document.getElementById("password");
+  passwordInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      checkPassword();
+    }
   });
 
+  // 🔊 อ้างอิง element
   const audio = document.getElementById("audio");
-const volumeSlider = document.getElementById("volumeSlider");
+  const playPauseBtn = document.getElementById("play-pause");
+  const progress = document.getElementById("progress");
+  const volumeSlider = document.getElementById('volumeSlider');
+  const songTitle = document.getElementById('song-title');
+  const coverArt = document.getElementById('cover-art');
 
-// ตั้งค่าเริ่มต้น
-audio.volume = volumeSlider.value;
+  // 🔊 ตั้ง playlist พร้อมข้อมูลครบ
+  const playlist = [
+    {
+      src: 'audio/yung kai blue official audio.mp3',
+      title: 'Blue Young kai',
+      cover: 'รูปวิว/316x316bb.webp'
+    },
+    {
+      src: 'audio/Play Date.mp3',
+      title: 'Play Date',
+      cover: 'รูปวิว/235.jpg' // เปลี่ยนเป็น path ของรูปอัลบั้มเพลงที่ 2
+    }
+  ];
+  let currentTrack = 0;
 
-// เปลี่ยนระดับเสียงเมื่อเลื่อน
-volumeSlider.addEventListener("input", function () {
-  audio.volume = this.value;
+  // 🔊 โหลดเพลงแรก
+  function loadTrack(index) {
+    audio.src = playlist[index].src;
+    songTitle.textContent = playlist[index].title;
+    coverArt.src = playlist[index].cover;
+  }
+  loadTrack(currentTrack);
+
+  // 🔊 ปุ่มเล่น/หยุด
+  playPauseBtn.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = '▶';
+    }
+  });
+
+  // 🔊 อัพเดท progress bar
+  audio.addEventListener("timeupdate", () => {
+    if (audio.duration) {
+      progress.value = (audio.currentTime / audio.duration) * 100;
+    }
+  });
+
+  // 🔊 เลื่อน progress bar
+  progress.addEventListener("input", () => {
+    if (audio.duration) {
+      audio.currentTime = (progress.value / 100) * audio.duration;
+    }
+  });
+
+  // 🔊 ปรับ volume
+  audio.volume = volumeSlider.value;
+  volumeSlider.addEventListener("input", function () {
+    audio.volume = this.value;
+  });
+
+  // 🔊 เล่นเพลงถัดไปอัตโนมัติ
+  audio.addEventListener('ended', () => {
+    currentTrack++;
+    if (currentTrack >= playlist.length) currentTrack = 0;
+    loadTrack(currentTrack);
+    audio.play();
+  });
 });
 
 
@@ -836,25 +926,18 @@ function onPlayerStateChange(event) {
 
 
 
-  const giftBox = document.getElementById("giftBox");
-const giftImage = document.getElementById("giftImage");
+ const giftBox = document.getElementById("giftBox");
 const secretContent = document.getElementById("secretContent");
-let opened = false;
 
 giftBox.addEventListener("click", () => {
-  if (opened) return;
-  opened = true;
+  // โชว์เนื้อหาที่ซ่อนอยู่
   secretContent.style.display = "block";
 
-  confetti({
-    particleCount: 200,
-    spread: 100,
-    origin: { y: 0.6 }
-  });
+  // ซ่อนกล่องของขวัญ
+  giftBox.style.display = "none";
 });
 
-
     </script>
-</html>
 
+</html>
 
