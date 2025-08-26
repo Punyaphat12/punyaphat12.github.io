@@ -434,8 +434,8 @@
 
   .jigsaw-container {
     display: grid;
-    grid-template-columns: repeat(5, 100px);
-    grid-template-rows: repeat(5, 100px);
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: repeat(4, 100px);
     gap: 2px;
     margin: 20px auto;
     margin-top: 50px;  
@@ -447,7 +447,7 @@
   .piece {
     width: 100px;
     height: 100px;
-    background-size: 500px 500px;
+    background-size: 400px 400px;
     cursor: grab;
   }
   .completed {
@@ -974,7 +974,7 @@ giftBox.addEventListener("click", () => {
 
 
 const image = "รูปวิว/5.jpeg"; // 👉 ใส่รูปคุณชลญาณ์
-  const size = 5; // 👉 ขนาด 3x3
+  const size = 4; // 👉 ขนาด 3x3
   const pieceSize = 100;
   const container = document.getElementById("jigsaw");
   const completedMsg = document.getElementById("completed");
@@ -983,82 +983,100 @@ const image = "รูปวิว/5.jpeg"; // 👉 ใส่รูปคุณ�
   let pieces = [];
 
   // ✅ สร้างชิ้นจิ๊กซอว์
-  function createPuzzle() {
-    positions = [];
-    container.innerHTML = "";
+function createPuzzle() {
+  positions = [];
+  container.innerHTML = "";
+  pieces = [];
 
-    for (let row = 0; row < size; row++) {
-      for (let col = 0; col < size; col++) {
-        const index = row * size + col;
-        positions.push(index);
+  for (let row = 0; row < size; row++) {
+    for (let col = 0; col < size; col++) {
+      const index = row * size + col;
+      positions.push(index);
 
-        const piece = document.createElement("div");
-        piece.classList.add("piece");
-        piece.style.backgroundImage = `url(${image})`;
-        piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
-        piece.dataset.index = index;
+      const piece = document.createElement("div");
+      piece.classList.add("piece");
+      piece.style.backgroundImage = `url(${image})`;
+      piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+      piece.dataset.index = index;
 
-        piece.draggable = true;
-        piece.addEventListener("dragstart", dragStart);
-        piece.addEventListener("dragover", dragOver);
-        piece.addEventListener("drop", drop);
+      container.appendChild(piece);
+      pieces.push(piece);
+    }
+  }
 
-        container.appendChild(piece);
-        pieces.push(piece);
+  shufflePuzzle();
+  enableDragDrop(); // ✅ เพิ่มระบบลากวาง (เมาส์+มือถือ)
+}
+
+// ✅ สุ่มตำแหน่ง
+function shufflePuzzle() {
+  positions.sort(() => Math.random() - 0.5);
+  positions.forEach((pos, i) => {
+    container.children[i].style.order = pos;
+    container.children[i].dataset.order = pos;
+  });
+}
+
+// ✅ ระบบลากชิ้นส่วน (รองรับเมาส์ + มือถือ)
+function enableDragDrop() {
+  let dragged = null;
+
+  pieces.forEach(piece => {
+    // 🖱️ Mouse events
+    piece.addEventListener("mousedown", startDrag);
+    piece.addEventListener("mouseup", endDrag);
+
+    // 📱 Touch events
+    piece.addEventListener("touchstart", startDrag, { passive: false });
+    piece.addEventListener("touchend", endDrag);
+
+    function startDrag(e) {
+      e.preventDefault();
+      dragged = piece;
+    }
+
+    function endDrag(e) {
+      const target = document.elementFromPoint(
+        e.changedTouches ? e.changedTouches[0].clientX : e.clientX,
+        e.changedTouches ? e.changedTouches[0].clientY : e.clientY
+      );
+
+      if (target && target.classList.contains("piece") && target !== dragged) {
+        // สลับตำแหน่ง order
+        const tempOrder = dragged.style.order;
+        dragged.style.order = target.style.order;
+        target.style.order = tempOrder;
+        checkWin();
       }
+      dragged = null;
     }
+  });
+}
 
-    shufflePuzzle();
-  }
-
-  // ✅ สุ่มตำแหน่ง
-  function shufflePuzzle() {
-    positions.sort(() => Math.random() - 0.5);
-    positions.forEach((pos, i) => {
-      container.children[i].style.order = pos;
-      container.children[i].dataset.order = pos;
-    });
-  }
-
-  let dragged;
-  function dragStart(e) {
-    dragged = e.target;
-  }
-  function dragOver(e) {
-    e.preventDefault();
-  }
-  function drop(e) {
-    if (dragged === e.target) return;
-    const tempOrder = dragged.style.order;
-    dragged.style.order = e.target.style.order;
-    e.target.style.order = tempOrder;
-
-    checkWin();
-  }
-
-  // ✅ เช็คว่าต่อครบยัง
-  function checkWin() {
-    let correct = true;
-    [...container.children].forEach((child, i) => {
-      if (child.style.order != child.dataset.index) {
-        correct = false;
-      }
-    });
-
-    if (correct) {
-      completedMsg.style.display = "block";
-      launchConfetti();
+// ✅ เช็คว่าต่อครบยัง
+function checkWin() {
+  let correct = true;
+  [...container.children].forEach((child, i) => {
+    if (child.style.order != child.dataset.index) {
+      correct = false;
     }
-  }
+  });
 
-  // 🎉 เอฟเฟกต์พลุ
-  function launchConfetti() {
-    if (window.confetti) {
-      confetti();
-    }
+  if (correct) {
+    completedMsg.style.display = "block";
+    launchConfetti();
   }
+}
 
-  createPuzzle();
+// 🎉 เอฟเฟกต์พลุ
+function launchConfetti() {
+  if (window.confetti) {
+    confetti();
+  }
+}
+
+createPuzzle();
+
     </script>
 
 </html>
