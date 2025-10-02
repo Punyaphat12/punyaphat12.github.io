@@ -457,6 +457,71 @@
     margin-top: 15px;
     font-weight: bold;
   }
+
+/* ปุ่ม */
+#previewBtn {
+  margin: 10px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ff4081;
+  color: white;
+  cursor: pointer;
+}
+#previewBtn:active {
+  background: #e73370;
+}
+
+/* กล่อง Preview */
+#previewBox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 9999;
+  background: rgba(0,0,0,0.7);
+  padding: 10px;
+  border-radius: 10px;
+}
+#previewBox img {
+  max-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+}
+
+#secretContent {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+#secretContent iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+ #countdown-box {
+    margin-top: 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+  #countdown-box h2 {
+    color: #fff;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  #countdown {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #ffeb3b;
+    text-shadow: 0 0 8px #000;
+  }
+
     </style>
  
 </head>
@@ -547,7 +612,7 @@
 <div id="secretContent" style="display: none;">
   <!-- เช่น วิดีโอ YouTube -->
    <h2 class="surprise-heading">🎉 SURPRISE 🎉</h2>
-    <p class="song-message">สนุกกับเพลงน้าาา5555
+    <p class="song-message">สนุกกับเพลงน้าาา5555 </p>
   <iframe id="youtubeVideo" src="https://www.youtube.com/embed/SjE_V8uNf1Q?enablejsapi=1" width="500" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
@@ -556,17 +621,18 @@
 
   <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
 <div class="swipe-container" style="display: none;">
-  <div class="card-stack" id="cardStack">
-    <div class="card" style="background-image: url('รูปวิว/1.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/2.jpeg');"></div>      
-    <div class="card" style="background-image: url('รูปวิว/3.jpg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/5.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/6.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
-    <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
-    <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
+
+ <div class="card-stack" id="cardStack">
+<div class="card" style="background-image: url('รูปวิว/1.jpeg');"></div>
+<div class="card" style="background-image: url('รูปวิว/2.jpeg');"></div> 
+<div class="card" style="background-image: url('รูปวิว/3.jpg');"></div>
+<div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
+<div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
+<div class="card" style="background-image: url('รูปวิว/IMG_0156.JPG');"></div>
+<div class="card" style="background-image: url('รูปวิว/6.jpeg');"></div>
+<div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
+<div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div> 
+<div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
 
 </div>
 
@@ -591,6 +657,24 @@
     🎉 ต่อสำเร็จแล้ว สุขสันต์วันเกิดคุณชลญาณ์! 🎂
   </div>
 </div>
+
+<!-- ปุ่มกด -->
+<button id="previewBtn">🔍 ดูภาพตัวอย่าง</button>
+
+<!-- กล่องโชว์รูปตัวอย่าง -->
+<div id="previewBox">
+  <img id="previewImage" src="รูปวิว/5.jpeg" alt="preview">
+</div>
+
+<!-- 🕒 Countdown Timer -->
+<div id="countdown-box">
+  <h2>⏳ นับถอยหลังสู่วันเกิดปีหน้า</h2>
+  <div id="countdown"></div>
+</div>
+
+
+
+
 
 <script>
 function checkPassword() {
@@ -847,54 +931,27 @@ const bubbleContainer = document.getElementById('bubble-container');
 const messages = [
   "สุขสันต์วันเกิดนะ! 🎉🥳",
   "ขอให้มีความสุขมากๆ 💖😊",
-  "วันนี้เป็นวันพิเศษ 🎈✨",
+  "ขอให้วันนี้เป็นวันพิเศษ 🎈✨",
   "ขอให้สมหวังทุกอย่างนะ! 🍀🌟",
   "ยิ้มเยอะๆ นะ 😊😁",
   "สุขภาพแข็งแรงนะครับ 💪🌿",
   "ขอให้เจอแต่สิ่งดีๆ 🌸🌞",
   "มีความสุขทุกวันเลยนะ! 🎂🎁",
   "ขอให้ความฝันเป็นจริงทุกประการ! 🌈🌟",
-  "รักและโชคดีเสมอ! ❤️🍀",
-  "เป็นวันที่ดีนะ! ☀️🌻",
-  "หัวเราะเยอะๆ นะ! 😄😂",
-  "โชคดีตลอดปี! 🍀🎊",
   "ประสบความสำเร็จในทุกอย่าง! 🏆🚀",
   "สนุกกับวันเกิด! 🎉🎂",
   "ขอให้ปีนี้เต็มไปด้วยความรัก! 💕💞",
-  "สุขภาพแข็งแรงและปลอดภัย! 💪🛡️",
-  "เติมเต็มด้วยรอยยิ้ม! 😁🌟",
-  "ความสุขอยู่กับคุณเสมอ! 😊💐",
   "ขอให้สมหวังในทุกสิ่ง! 🍀🙏",
   "มีแต่คนรักและห่วงใย! ❤️🤗",
   "ชีวิตสดใส! ☀️🌈",
-  "เดินทางปลอดภัย! 🚗🛣️",
   "เจอแต่สิ่งดีๆ! 🌷🌟",
   "คิดดี ทำดี ได้ดี! 🤔👍",
-  "ขอให้ใจสงบและมีความสุข! 🧘‍♂️💖",
-  "วันดีๆ สำหรับคนดี! 🌞🌹",
   "พบเจอแต่สิ่งสวยงาม! 🌺🌻",
-  "ทุกวันคือของขวัญ! 🎁🎉",
   "จงเชื่อมั่นในตัวเอง! 💪🌟",
-  "ความรักเติมเต็มใจ! ❤️😊",
   "ความสำเร็จอยู่ไม่ไกล! 🏅🚀",
-  "มีแรงบันดาลใจทุกวัน! 🌞🔥",
   "สนุกกับทุกช่วงเวลา! 😄🎈",
-  "ขอให้ได้พบความสุขแท้จริง! 💖🌈",
-  "วันนี้สดใสเสมอ! ☀️😊",
   "รักตัวเองให้มากขึ้น! 💕🌷",
-  "ยิ้มรับทุกเรื่อง! 😁🌟",
-  "ขอให้ใจเบิกบาน! 💖✨",
   "ทำทุกวันให้ดีที่สุด! 💪🎯",
-  "อยู่กับคนที่รัก! ❤️🤗",
-  "เติมพลังใจทุกวัน! ⚡💖",
-  "มีแต่ความเจริญ! 🚀🌟",
-  "ชีวิตรุ่งโรจน์! 🌞🏆",
-  "ขอให้ฝันเป็นจริง! 🌈✨",
-  "โชคดีในทุกๆ ด้าน! 🍀😊",
-  "สุขภาพดีไม่มีโรค! 💪🍎",
-  "พบเจอแต่ความสงบ! 🧘‍♀️🌿",
-  "หัวใจเต็มไปด้วยความสุข! ❤️😊",
-  "ขอให้วันนี้เป็นวันที่ดีที่สุด! 🎉🌟"
 ];
 
 
@@ -1077,7 +1134,42 @@ function launchConfetti() {
 
 createPuzzle();
 
-    </script>
+// ✅ ปุ่ม Preview
+const previewBtn = document.getElementById("previewBtn");
+const previewBox = document.getElementById("previewBox");
+
+previewBtn.addEventListener("click", () => {
+  previewBox.style.display = "block";
+
+  // ซ่อนอัตโนมัติหลัง 3 วิ
+  setTimeout(() => {
+    previewBox.style.display = "none";
+  }, 3000);
+});
+
+ function updateCountdown() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    // 🎂 วันเกิดปีหน้า (10 ตุลาคม)
+    const nextBirthday = new Date(`${currentYear + 1}-10-10 00:00:00`);
+
+    const diff = nextBirthday - now;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("countdown").innerHTML = 
+      `${days} วัน ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`; 
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+
+
+</script>
 
 </html>
 
