@@ -433,17 +433,30 @@
 }
 
   .jigsaw-container {
-    display: grid;
-    grid-template-columns: repeat(4, 100px);
-    grid-template-rows: repeat(4, 100px);
-    gap: 2px;
-    margin: 20px auto;
-    margin-top: 50px;  
-    width: max-content;
-    border: 3px solid #ff69b4;
-    border-radius: 10px;
-    background: #fff;
-  }
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: repeat(4, 100px);
+  gap: 2px;
+  margin: 20px auto;
+  margin-top: 150px;  /* 🔹 ลดการขยับขึ้นจาก -150px → เหลือ -90px (พอดีไม่โดนบัง) */
+  width: max-content;
+  border: 3px solid #ff69b4;
+  border-radius: 10px;
+  background: #fff;
+  position: relative;
+  z-index: 5; /* 🔹 ทำให้เห็นชัดไม่โดนบัง */
+}
+.jigsaw-title {
+  text-align: center;
+  color: #ff1493;
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 50px;  /* 🔹 ขยับขึ้นเล็กน้อยให้อยู่เหนือจิ๊กซอว์ */
+  margin-bottom: -90px;
+  position: relative;
+  z-index: 10;
+}
+
   .piece {
     width: 100px;
     height: 100px;
@@ -621,18 +634,17 @@
 
   <!-- ✅ Swipe Card Stack ปรากฏหลังเปิดการ์ด -->
 <div class="swipe-container" style="display: none;">
-
- <div class="card-stack" id="cardStack">
-<div class="card" style="background-image: url('รูปวิว/1.jpeg');"></div>
-<div class="card" style="background-image: url('รูปวิว/2.jpeg');"></div> 
-<div class="card" style="background-image: url('รูปวิว/3.jpg');"></div>
-<div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
-<div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
-<div class="card" style="background-image: url('รูปวิว/IMG_0156.JPG');"></div>
-<div class="card" style="background-image: url('รูปวิว/6.jpeg');"></div>
-<div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
-<div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div> 
-<div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
+  <div class="card-stack" id="cardStack">
+    <div class="card" style="background-image: url('รูปวิว/1.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/2.jpeg');"></div>      
+    <div class="card" style="background-image: url('รูปวิว/3.jpg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/น่ารักสุด.jpg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/4.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/IMG_0156.JPG');"></div>
+    <div class="card" style="background-image: url('รูปวิว/6.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/7.jpeg');"></div>
+    <div class="card" style="background-image: url('รูปวิว/8.jpeg');"></div>    
+    <div class="card" style="background-image: url('รูปวิว/9.jpeg');"></div>
 
 </div>
 
@@ -647,12 +659,13 @@
   overflow: visible;
 "></div>
 
-</body>
 
 
 <div id="jigsawGame">
-  <h3 style="text-align:center; margin-top:250px;">🧩 ต่อจิ๊กซอว์วันเกิด</h3>
+  <h3 class="jigsaw-title">🧩 ต่อจิ๊กซอว์วันเกิด</h3>
+
   <div class="jigsaw-container" id="jigsaw"></div>
+
   <div class="completed" id="completed" style="display:none;">
     🎉 ต่อสำเร็จแล้ว สุขสันต์วันเกิดคุณชลญาณ์! 🎂
   </div>
@@ -672,9 +685,19 @@
   <div id="countdown"></div>
 </div>
 
+<!-- วิดีโอ YouTube ท้ายเว็บ -->
+<div class="video-section" style="width: 90%; max-width: 500px; margin: 50px auto; position: relative;">
+    
+    <h2 class="surprise-heading">🎉 ENDCREDIT 🎉</h2>
 
+   <iframe id="youtubeVideoFooter" src="https://www.youtube.com/embed/jvbuodKWmyI?enablejsapi=1"
+ frameborder="0" 
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+ allowfullscreen>
+   </iframe>
+</div>
 
-
+</body>
 
 <script>
 function checkPassword() {
@@ -931,27 +954,54 @@ const bubbleContainer = document.getElementById('bubble-container');
 const messages = [
   "สุขสันต์วันเกิดนะ! 🎉🥳",
   "ขอให้มีความสุขมากๆ 💖😊",
-  "ขอให้วันนี้เป็นวันพิเศษ 🎈✨",
+  "วันนี้เป็นวันพิเศษ 🎈✨",
   "ขอให้สมหวังทุกอย่างนะ! 🍀🌟",
   "ยิ้มเยอะๆ นะ 😊😁",
   "สุขภาพแข็งแรงนะครับ 💪🌿",
   "ขอให้เจอแต่สิ่งดีๆ 🌸🌞",
   "มีความสุขทุกวันเลยนะ! 🎂🎁",
   "ขอให้ความฝันเป็นจริงทุกประการ! 🌈🌟",
+  "รักและโชคดีเสมอ! ❤️🍀",
+  "เป็นวันที่ดีนะ! ☀️🌻",
+  "หัวเราะเยอะๆ นะ! 😄😂",
+  "โชคดีตลอดปี! 🍀🎊",
   "ประสบความสำเร็จในทุกอย่าง! 🏆🚀",
   "สนุกกับวันเกิด! 🎉🎂",
   "ขอให้ปีนี้เต็มไปด้วยความรัก! 💕💞",
+  "สุขภาพแข็งแรงและปลอดภัย! 💪🛡️",
+  "เติมเต็มด้วยรอยยิ้ม! 😁🌟",
+  "ความสุขอยู่กับคุณเสมอ! 😊💐",
   "ขอให้สมหวังในทุกสิ่ง! 🍀🙏",
   "มีแต่คนรักและห่วงใย! ❤️🤗",
   "ชีวิตสดใส! ☀️🌈",
+  "เดินทางปลอดภัย! 🚗🛣️",
   "เจอแต่สิ่งดีๆ! 🌷🌟",
   "คิดดี ทำดี ได้ดี! 🤔👍",
+  "ขอให้ใจสงบและมีความสุข! 🧘‍♂️💖",
+  "วันดีๆ สำหรับคนดี! 🌞🌹",
   "พบเจอแต่สิ่งสวยงาม! 🌺🌻",
+  "ทุกวันคือของขวัญ! 🎁🎉",
   "จงเชื่อมั่นในตัวเอง! 💪🌟",
+  "ความรักเติมเต็มใจ! ❤️😊",
   "ความสำเร็จอยู่ไม่ไกล! 🏅🚀",
+  "มีแรงบันดาลใจทุกวัน! 🌞🔥",
   "สนุกกับทุกช่วงเวลา! 😄🎈",
+  "ขอให้ได้พบความสุขแท้จริง! 💖🌈",
+  "วันนี้สดใสเสมอ! ☀️😊",
   "รักตัวเองให้มากขึ้น! 💕🌷",
+  "ยิ้มรับทุกเรื่อง! 😁🌟",
+  "ขอให้ใจเบิกบาน! 💖✨",
   "ทำทุกวันให้ดีที่สุด! 💪🎯",
+  "อยู่กับคนที่รัก! ❤️🤗",
+  "เติมพลังใจทุกวัน! ⚡💖",
+  "มีแต่ความเจริญ! 🚀🌟",
+  "ชีวิตรุ่งโรจน์! 🌞🏆",
+  "ขอให้ฝันเป็นจริง! 🌈✨",
+  "โชคดีในทุกๆ ด้าน! 🍀😊",
+  "สุขภาพดีไม่มีโรค! 💪🍎",
+  "พบเจอแต่ความสงบ! 🧘‍♀️🌿",
+  "หัวใจเต็มไปด้วยความสุข! ❤️😊",
+  "ขอให้วันนี้เป็นวันที่ดีที่สุด! 🎉🌟"
 ];
 
 
@@ -992,13 +1042,24 @@ tag.src = "https://www.youtube.com/iframe_api";
 document.body.appendChild(tag);
 
 let player;
+let playerFooter; // <-- เพิ่มตัวแปรสำหรับคลิปท้ายเว็บ
+
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('youtubeVideo', {
-    events: {
-      'onStateChange': onPlayerStateChange
-    }
-  });
+// สำหรับคลิปเซอร์ไพรส์ (เดิม)
+player = new YT.Player('youtubeVideo', {
+ events: {
+'onStateChange': onPlayerStateChange
 }
+});
+
+ // สำหรับคลิปท้ายเว็บ (ใหม่)
+playerFooter = new YT.Player('youtubeVideoFooter', {
+ events: {
+ 'onStateChange': onPlayerStateChange // ใช้ฟังก์ชันเดิมได้เลย
+ }
+});
+}
+ 
 
 function onPlayerStateChange(event) {
   const audio = document.getElementById("audio");
@@ -1150,8 +1211,12 @@ previewBtn.addEventListener("click", () => {
  function updateCountdown() {
     const now = new Date();
     const currentYear = now.getFullYear();
-    // 🎂 วันเกิดปีหน้า (10 ตุลาคม)
-    const nextBirthday = new Date(`${currentYear + 1}-10-10 00:00:00`);
+    const nextBirthday = new Date(`${currentYear}-10-10T00:00:00`);
+
+    // ถ้าวันเกิดปีนี้ยังไม่มาถึง
+    if (now > nextBirthday) {
+        nextBirthday.setFullYear(currentYear + 1);
+    }
 
     const diff = nextBirthday - now;
 
@@ -1160,16 +1225,15 @@ previewBtn.addEventListener("click", () => {
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById("countdown").innerHTML = 
-      `${days} วัน ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`; 
-  }
+    const countdownEl = document.getElementById("countdown");
+    countdownEl.textContent = `${days} วัน ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`;
+}
 
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
+// เรียก update ทุก 1 วินาที
+setInterval(updateCountdown, 1000);
+updateCountdown(); // เรียกทันทีตอนโหลดหน้า
 
-
-
-</script>
+    </script>
 
 </html>
 
